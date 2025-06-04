@@ -10,14 +10,16 @@ public class JDBC {
 
     private static final String PASSWORD = "password";
 
-    private static final String INSERT_STRING_PERSONAL = "INSERT INTO personal(pnr, name, vorname, geh_stufe, abt_nr, krankenkasse) VALUES(?, ?, ?, ?, ?, ?)";
+    // private static final String INSERT_STRING_PERSONAL = "INSERT INTO personal(pnr, name, vorname, geh_stufe, abt_nr, krankenkasse) VALUES(?, ?, ?, ?, ?, ?)";
 
     public static Connection connect() throws SQLException {
         return DriverManager.getConnection(CON_STRING, USER, PASSWORD);
     }
 
     public static void create_personal() {
-        try ( Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(INSERT_STRING_PERSONAL)) {
+        final String query = "INSERT INTO personal(pnr, name, vorname, geh_stufe, abt_nr, krankenkasse) VALUES(?, ?, ?, ?, ?, ?)";
+
+        try ( Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(query)) {
 
         final String name = "Krause";
         final String firstname = "Henrik";
@@ -60,6 +62,34 @@ public class JDBC {
 
         } catch (SQLException e) {
             System.err.println("❌ Fehler beim Lesen der Daten");
+            e.printStackTrace();
+        }
+    }
+
+    public static void update_gehalt() {
+        final String query = "UPDATE gehalt SET betrag = betrag * 1.10 WHERE geh_stufe = 'it1'";
+
+        try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            int updated = stmt.executeUpdate();
+            System.out.println("✅ Gehalt bei " + updated + " Stufen erhöht.");
+
+        } catch (SQLException e) {
+            System.err.println("❌ Fehler beim Aktualisieren der Gehälter");
+            e.printStackTrace();
+        }
+    }
+
+    public static void delete_person() {
+        final String query = "DELETE FROM personal WHERE vorname = 'Lutz' and name = 'Tietze'";
+
+        try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            int deleted = stmt.executeUpdate();
+            System.out.println("✅ " + deleted + " Peronen gelöscht");
+
+        } catch (SQLException e) {
+            System.err.println("❌ Fehler beim Löschen der Person");
             e.printStackTrace();
         }
     }

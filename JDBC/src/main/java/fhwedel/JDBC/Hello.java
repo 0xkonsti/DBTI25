@@ -9,5 +9,9 @@ public class Hello {
         // JDBC.create_personal();
 
         JDBC.read_personal();
+
+        JDBC.update_gehalt();
+
+        JDBC.delete_person();
     }
 }
