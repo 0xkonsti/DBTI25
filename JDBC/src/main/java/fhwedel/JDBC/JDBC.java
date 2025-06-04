@@ -93,4 +93,22 @@ public class JDBC {
             e.printStackTrace();
         }
     }
+
+    public static void sales_personal() {
+        final String query = "SELECT p.name, p.vorname FROM personal as p INNER JOIN abteilung as a ON a.abt_nr = p.abt_nr WHERE a.name = 'Verkauf'";
+
+        try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(query); ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String firstname = rs.getString("vorname");
+
+                System.out.printf("👤 %s %s\n", firstname, name);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("❌ Fehler beim Ausgeben des Verkaufs Peronals");
+            e.printStackTrace();
+        }
+            
+    }
 }
