@@ -3,22 +3,27 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
-    "forwardPorts": [3306],
+    "forwardPorts": [
+        3306
+    ],
     "postCreateCommand": "bash /usr/local/bin/startup.sh",
     "remoteUser": "root",
-
     "customizations": {
         "vscode": {
             "extensions": [
                 "vscjava.vscode-java-pack"
-	    ]
+            ]
         },
-        "settings": { 
+        "settings": {
             "terminal.integrated.shell.linux": "/bin/bash",
             "git.enabled": true,
             "git.autofetch": true,
             "git.confirmSync": false
         }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/sshd:1": {
+            "version": "latest"
+        }
     }
 }
-
